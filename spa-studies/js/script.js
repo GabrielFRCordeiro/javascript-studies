@@ -1,8 +1,18 @@
+/*
+  history.pushState() => updates URL without reloading the page
+  - first argument: state object (can be used to store information about the page)
+  - second argument: page title (not widely supported)
+  - third argument: new URL
+
+  window.onpopstate => event triggered by user browsing history
+*/
+
 function showPage(page) {
     const content = document.querySelector("#content");
 
     if (page === 'home') {
-        content.innerHTML = `<p>Welcome to my portifolio website!</p>`
+        content.innerHTML = `<p>Welcome to my portifolio website!</p>`;
+        history.pushState({ page: 'home' }, 'Home', '/home');
     } else if (page === 'portifolio') {
         content.innerHTML = `<ul>
             <li>
@@ -31,7 +41,8 @@ function showPage(page) {
                     <li>React</li>
                 </ul>
             </li>
-        </ul>`
+        </ul>`;
+        history.pushState({ page: 'portifolio' }, 'Portifolio', '/portifolio');
     } else if (page === 'about-me') {
         content.innerHTML = `<h1>School</h1>
         <p>Math olympics</p>
@@ -47,6 +58,17 @@ function showPage(page) {
             <li>Database with MySQL</li>
             <li>Project Management with Scrum and KanBan</li>
             <li>Version Control with GitHub</li>
-        </ul>`
+        </ul>`;
+        history.pushState({ page: 'about-me' }, 'About Me', '/about-me');
     }
 }
+
+window.onpopstate = function(event) {
+    if (event.state) {
+        showPage(event.state.page);
+    }
+};
+
+window.onload = function() {
+    showPage('home');
+};
